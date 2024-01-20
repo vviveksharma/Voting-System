@@ -6,13 +6,13 @@ info:
   contact:
     name: Vivek Sharma
     email: sharmavivek1709@gmail.com
-  
+
 tags:
   - name: Users
     description: Operations related to users
   - name: Admin
-    description: Operation related to the admin
-  
+    description: Operation related to the Admin
+
 paths:
   /register:
     post:
@@ -42,7 +42,7 @@ paths:
       tags:
         - Users
       responses:
-        '200':
+        "200":
           description: Successful registeration
           content:
             application/json:
@@ -52,8 +52,8 @@ paths:
                   token:
                     type: string
                     example: 123456
-                    
-        '409':
+
+        "409":
           description: CONFLICT (User already exists)
           content:
             application/json:
@@ -63,6 +63,7 @@ paths:
                   token:
                     type: string
                     example: User already exist please login
+
   /login:
     post:
       summary: Use to login the user inside the system.
@@ -83,7 +84,7 @@ paths:
       tags:
         - Users
       responses:
-        '200':
+        "200":
           description: Flow to the login screen.
           content:
             application/json:
@@ -96,17 +97,17 @@ paths:
                   UserId:
                     type: string
                     example: 00000-00000-0000-0000
-        '409':
+        "409":
           description: User has not validated the token
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                 response:
-                  type: string
-                  example: Please validate the token 
-                  
+                  response:
+                    type: string
+                    example: Please validate the token
+
   /validate-token:
     post:
       summary: Validate the token.
@@ -118,14 +119,14 @@ paths:
             schema:
               type: object
               properties:
-                token: 
+                token:
                   type: string
                   example: abcdef45
-                
+
       tags:
         - Users
       responses:
-        '200':
+        "200":
           description: Successfull
           content:
             application/json:
@@ -135,7 +136,7 @@ paths:
                   response:
                     type: string
                     example: Token validation Successful
-        '400':
+        "400":
           description: BAD REQUEST
           content:
             application/json:
@@ -145,17 +146,17 @@ paths:
                   response:
                     type: string
                     example: Token entered is wrong
-  
+
   /cast-vote/{userId}:
     post:
       summary: Casting the vote on the basis options
       parameters:
-      - name: userId
-        in: path
-        description: ID of the user
-        required: true
-        schema:
-          type: integer
+        - name: userId
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
       requestBody:
         description: Candidate options
         required: true
@@ -170,7 +171,7 @@ paths:
       tags:
         - Users
       responses:
-        '200':
+        "200":
           description: Successful registeration
           content:
             application/json:
@@ -178,9 +179,9 @@ paths:
                 type: object
                 properties:
                   acknowledgment:
-                    type: string 
+                    type: string
                     example: Your vote is saved successfully
-        '400':
+        "400":
           description: Unable to get the UserId
           content:
             application/json:
@@ -190,4 +191,293 @@ paths:
                   acknowledgment:
                     type: string
                     example: Unable to find the userId provided
-                  
+
+  /send-email:
+    post:
+      summary: Send the varification Email to the user
+      requestBody:
+        description: User login credentials
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+              required:
+                - username
+                - email
+                - password
+                - voterId
+      tags:
+        - Users
+      responses:
+        "200":
+          description: Successful registeration
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                    example: Email Send Successfully
+
+        "500":
+          description: Email sent successfull
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                    example: SERVER ISSUE
+
+  /admin:
+    post:
+      summary: Super Admin to add the Admin candidate
+      requestBody:
+        description: Enter the UUID access-Key
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                adminId:
+                  type: string
+                  example: 000-0000-000-0000
+              required:
+                - adminId
+      tags:
+        - Admin
+      responses:
+        "200":
+          description: Sucess
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                    example: Success
+        "400":
+          description: Failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                    example: You dont have the access to enter as an Admin
+
+  /admin/register:
+    post:
+      summary: Register the user on the DataBase
+      requestBody:
+        description: User login credentials
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                govtId:
+                  type: string
+              required:
+                - username
+                - email
+                - password
+                - govtId
+      tags:
+        - Admin
+      responses:
+        "200":
+          description: Successful registeration
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  loginID:
+                    type: string
+                    example: 123456
+
+        "409":
+          description: Government Employee is not verified
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                    example: User is not a government Employee
+
+        "400":
+          description: CONFLICT (Government Employee already exists)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                    example: Admin Id already exist please login
+
+  /admin/login:
+    post:
+      summary: Login as Admin (Check in DB if he has access to login as the Admin)
+      requestBody:
+        description: Enter the government assigned VoterId
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                loginId:
+                  type: string
+                  example: 000-0000-000-0000
+              required:
+                - loginId
+      tags:
+        - Admin
+      responses:
+        "200":
+          description: Successful Login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                    example: Login Successfull
+
+        "400":
+          description: Wrong ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: Employee not found
+
+  /admin/role/{govtId}:
+    put:
+      summary: Giving the employee the role they wanted
+      parameters:
+        - name: govtId
+          in: path
+          required: true
+          schema:
+            type: string
+
+      tags:
+        - Admin
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                    example: Role provided
+
+  /admin/open-vote:
+    post:
+      description: Admin can open the Voting lines
+      summary: Power to open voting
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                response:
+                  type: string
+                  example: Vote opened
+                expiration:
+                  type: string
+                  example: 2023-10-2003
+      tags:
+        - Admin
+      responses:
+        "200":
+          description: Success
+
+  /admin/get-results:
+    get:
+      summary: API to get counts of votes
+      tags:
+        - Admin
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: integer
+                    example: 100
+
+  /admin/add-candidate:
+    post:
+      description: Adding the candidate in the DataBase
+      summary: Add a party as a candidate for elections
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Name:
+                  type: string
+                  example: BJP
+                Image:
+                  type: string
+                  example: image.jpg
+      tags:
+        - Admin
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                    example: BJP entered Successfully
+        "409":
+          description: Candidate is already in the DataBase
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                    example: Entry is already there
