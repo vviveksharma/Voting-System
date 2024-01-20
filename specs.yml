@@ -1,0 +1,193 @@
+openapi: 3.0.0
+info:
+  title: Voting System API
+  description: Description of your API
+  version: 1.0.0
+  contact:
+    name: Vivek Sharma
+    email: sharmavivek1709@gmail.com
+  
+tags:
+  - name: Users
+    description: Operations related to users
+  - name: Admin
+    description: Operation related to the admin
+  
+paths:
+  /register:
+    post:
+      summary: Register the user on the DataBase
+      requestBody:
+        description: User login credentials
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                voterId:
+                  type: string
+              required:
+                - username
+                - email
+                - password
+                - voterId
+      tags:
+        - Users
+      responses:
+        '200':
+          description: Successful registeration
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: 123456
+                    
+        '409':
+          description: CONFLICT (User already exists)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: User already exist please login
+  /login:
+    post:
+      summary: Use to login the user inside the system.
+      description: User login credentials expecting user has already validated the token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: user@example.com
+                password:
+                  type: string
+                  example: strong password
+      tags:
+        - Users
+      responses:
+        '200':
+          description: Flow to the login screen.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Login Successfull
+                  UserId:
+                    type: string
+                    example: 00000-00000-0000-0000
+        '409':
+          description: User has not validated the token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 response:
+                  type: string
+                  example: Please validate the token 
+                  
+  /validate-token:
+    post:
+      summary: Validate the token.
+      description: Validating the token given at the time of login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token: 
+                  type: string
+                  example: abcdef45
+                
+      tags:
+        - Users
+      responses:
+        '200':
+          description: Successfull
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                    example: Token validation Successful
+        '400':
+          description: BAD REQUEST
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                    example: Token entered is wrong
+  
+  /cast-vote/{userId}:
+    post:
+      summary: Casting the vote on the basis options
+      parameters:
+      - name: userId
+        in: path
+        description: ID of the user
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        description: Candidate options
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                candidate:
+                  type: string
+                  example: BJP
+      tags:
+        - Users
+      responses:
+        '200':
+          description: Successful registeration
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  acknowledgment:
+                    type: string 
+                    example: Your vote is saved successfully
+        '400':
+          description: Unable to get the UserId
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  acknowledgment:
+                    type: string
+                    example: Unable to find the userId provided
+                  
