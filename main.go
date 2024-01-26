@@ -2,6 +2,9 @@ package main
 
 import (
 	"log"
+	routes "voting-system/api"
+	"voting-system/api/handlers"
+	"voting-system/api/services"
 	"voting-system/db"
 
 	"github.com/gofiber/fiber/v2"
@@ -13,11 +16,10 @@ func main() {
 	app.Use(recover.New())
 
 	db.InitDB()
+	var log *log.Logger
 	// Swagger UI
-	app.Get("/health-check", func(c *fiber.Ctx) error {
-		return c.SendString("service is up and healthy")
-	})
-
+	handler := handlers.NewHandler(log).UserServiceInstance(services.NewUserService())
+	routes.Routes(app, handler)
 	// Your API routes go here...
 	log.Fatal(app.Listen(":8000"))
 }

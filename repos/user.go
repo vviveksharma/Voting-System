@@ -10,4 +10,5 @@ func NewUserRequest() (User, error) {
 
 type User interface {
 	Create(*models.DbUser) error
+	Find(conditions *models.DbUser) (*models.DbUser, error)
 }
