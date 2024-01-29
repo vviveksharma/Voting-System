@@ -1,1 +1,2 @@
 DROP TABLE IF EXISTS user_tbl;
+DROP TABLE IF EXISTS admin_tbl;
