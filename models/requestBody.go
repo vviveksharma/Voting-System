@@ -13,9 +13,11 @@ type UserLoginRequestBody struct {
 }
 
 type UserValidateTokeRequestBody struct {
-	Token string
+	Email string `json:"email"`
+	Token string `json:"token"`
 }
 
 type UserCastVoteRequestBody struct {
-	CandidateName string
+	Email         string `json:"email"`
+	CandidateName string `json:"candidate_name"`
 }

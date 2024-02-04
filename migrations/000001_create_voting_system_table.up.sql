@@ -12,12 +12,14 @@ CREATE TABLE IF NOT EXISTS user_tbl (
     is_voted boolean,
     is_logged_in boolean,
     is_validated boolean,
+    token UUID,
     voter_id UUID 
 );
 
 CREATE TABLE IF NOT EXISTS admin_tbl (
     id UUID PRIMARY KEY,
-    role character varying(255) NOT NULL
+    role character varying(255) NOT NULL,
+    is_super_admin boolean
 );
 
 

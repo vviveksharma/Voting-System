@@ -7,6 +7,10 @@ compose-with-debug: compose-build
 	@echo "Starting in the debug mode for container"
 	@docker compose up 
 
+compose-without-app: compose-build
+	@echo "Starting in the debug mode for container"
+	@docker compose up --scale app=0 -d
+
 compose-up: compose-build
 	@docker compose up -d
 

@@ -15,6 +15,7 @@ type DbUser struct {
 	IsVoted    bool      `gorm:"column:is_voted;type:bool"`
 	IsLoggedIn bool      `gorm:"column:is_logged_in;type:bool"`
 	IsValidate bool      `gorm:"column:is_validated;type:bool"`
+	Token      uuid.UUID `gorm:"column:token;varchar(6)"`
 	VoterID    uuid.UUID `gorm:"column:voter_id"`
 }
 
@@ -29,8 +30,9 @@ func (*DbUser) BeforeCreate(tx *gorm.DB) error {
 }
 
 type DbAdmin struct {
-	Id   uuid.UUID `gorm:"primaryKey,column:id"`
-	Role string    `gorm:"column:role;varchar(255);not null"`
+	Id           uuid.UUID `gorm:"primaryKey,column:id"`
+	Role         string    `gorm:"column:role;varchar(255);not null"`
+	IsSuperAdmin bool      `gorm:"column:is_super_admin;type:bool"`
 }
 
 func (DbAdmin) TableName() string {
@@ -43,6 +45,7 @@ func (*DbAdmin) BeforeCreate(tx *gorm.DB) error {
 	return nil
 }
 
+// Candidate Name will always be hashed
 type DbCandidate struct {
 	Id    uuid.UUID `gorm:"primaryKey,column:id"`
 	Name  string    `gorm:"column:name;varchar(255);not null"`
