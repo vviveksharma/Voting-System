@@ -9,7 +9,7 @@ type UserLoginResponseBody struct {
 }
 
 type UserValidateTokenResponseBody struct {
-	VoterId string
+	Response string `json:"response"`
 }
 
 type UserCastVoteResponseBody struct {

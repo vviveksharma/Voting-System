@@ -5,10 +5,10 @@ import (
 	"voting-system/models"
 )
 
-type UserImpl struct {
+type CandidateImpl struct {
 }
 
-func (um *UserImpl) Create(value *models.DbUser) error {
+func (cd *CandidateImpl) Create(value *models.DbCandidate) error {
 	dbConn, err := db.InitDB()
 	if err != nil {
 		return err
@@ -26,7 +26,7 @@ func (um *UserImpl) Create(value *models.DbUser) error {
 	return nil
 }
 
-func (um *UserImpl) Find(conditions *models.DbUser) (*models.DbUser, error) {
+func (cd *CandidateImpl) Find(conditions *models.DbCandidate) (*models.DbCandidate, error) {
 	dbConn, err := db.InitDB()
 	if err != nil {
 		return nil, err
@@ -36,7 +36,7 @@ func (um *UserImpl) Find(conditions *models.DbUser) (*models.DbUser, error) {
 		return nil, transaction.Error
 	}
 	defer transaction.Rollback()
-	var value models.DbUser
+	var value models.DbCandidate
 	state := transaction.Find(&value, conditions)
 	if state.Error != nil {
 		return nil, state.Error
@@ -44,7 +44,7 @@ func (um *UserImpl) Find(conditions *models.DbUser) (*models.DbUser, error) {
 	return &value, nil
 }
 
-func (um *UserImpl) Update(value *models.DbUser) error {
+func (cd *CandidateImpl)Update(value *models.DbCandidate) error {
 	dbConn, err := db.InitDB()
 	if err != nil {
 		return err
@@ -54,10 +54,9 @@ func (um *UserImpl) Update(value *models.DbUser) error {
 		return transaction.Error
 	}
 	defer transaction.Rollback()
-	state := transaction.Save(value)
+	state := transaction.Save(&value)
 	if state.Error != nil {
 		return state.Error
 	}
-	transaction.Commit()
 	return nil
 }

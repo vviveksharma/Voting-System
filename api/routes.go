@@ -13,4 +13,5 @@ func Routes(app *fiber.App, h *handlers.Handler) {
 
 	app.Post("/users/register", h.UserRegister)
 	app.Post("/users/login", h.UserLogin)
+	app.Post("/users/validate-token", h.UserValidateToken)
 }
