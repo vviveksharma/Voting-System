@@ -44,7 +44,7 @@ func (cd *CandidateImpl) Find(conditions *models.DbCandidate) (*models.DbCandida
 	return &value, nil
 }
 
-func (cd *CandidateImpl)Update(value *models.DbCandidate) error {
+func (cd *CandidateImpl) Update(value *models.DbCandidate) error {
 	dbConn, err := db.InitDB()
 	if err != nil {
 		return err
@@ -58,5 +58,6 @@ func (cd *CandidateImpl)Update(value *models.DbCandidate) error {
 	if state.Error != nil {
 		return state.Error
 	}
+	transaction.Commit()
 	return nil
 }

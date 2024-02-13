@@ -21,3 +21,19 @@ type UserCastVoteRequestBody struct {
 	Email         string `json:"email"`
 	CandidateName string `json:"candidate_name"`
 }
+
+type AdminEmployeeRegisterRequesteBody struct {
+	AdminId string `json:"admin_Id"`
+	Email   string `json:"email"`
+	Role    string `json:"role"`
+}
+
+type AdminEmployeeLoginRequesteBody struct {
+	EmplId string `json:"empl_id"`
+}
+
+type AdminOpenVoteRequestBody struct {
+	Id   string `json:"id"`
+	Role string `json:"role"`
+	Time int64  `json:"time"`
+}

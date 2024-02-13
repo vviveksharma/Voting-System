@@ -6,8 +6,9 @@ import (
 )
 
 type Handler struct {
-	Logger      *log.Logger
-	UserService services.IUserService
+	Logger       *log.Logger
+	UserService  services.IUserService
+	AdminService services.IAdminService
 }
 
 func NewHandler(logger *log.Logger) *Handler {
@@ -19,3 +20,7 @@ func (h *Handler) UserServiceInstance(us services.IUserService) *Handler {
 	return h
 }
 
+func (h *Handler) AdminSericeInstance(ad services.IAdminService) *Handler {
+	h.AdminService = ad
+	return h
+}

@@ -1,6 +1,8 @@
 package models
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
@@ -61,4 +63,28 @@ func (*DbCandidate) BeforeCreate(tx *gorm.DB) error {
 	uuid := uuid.New().String()
 	tx.Statement.SetColumn("Id", uuid)
 	return nil
+}
+
+type DbEmployee struct {
+	Id    uuid.UUID `gorm:"primaryKey,column:id"`
+	Email string    `gorm:"column:email;type:varchar(100);not null"`
+	Role  string    `gorm:"column:role;varchar(255);not null"`
+}
+
+func (DbEmployee) TableName() string {
+	return "employee_tbl"
+}
+
+func (*DbEmployee) BeforeCreate(tx *gorm.DB) error {
+	uuid := uuid.New().String()
+	tx.Statement.SetColumn("Id", uuid)
+	return nil
+}
+
+type DbVote struct {
+	VoteTime time.Time `gorm:"voter_time"`
+}
+
+func (DbVote) TableName() string {
+	return "vote_tbl"
 }

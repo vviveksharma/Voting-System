@@ -14,7 +14,7 @@ func SendEmail(to string, body string, subject string) (bool, error) {
 
 	err := godotenv.Load()
 	if err != nil {
-		log.Print("error loading .env file")
+		log.Print("error loading .env file" + err.Error())
 	}
 	from := os.Getenv("EMAIL")
 	password := os.Getenv("PASSWORD")

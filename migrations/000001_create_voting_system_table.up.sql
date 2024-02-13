@@ -30,6 +30,12 @@ CREATE TABLE IF NOT EXISTS candidate_tbl (
     image character varying(500) NULL
 );
 
+CREATE TABLE IF NOT EXISTS employee_tbl (
+    id UUID PRIMARY KEY,
+    email character varying(100) NOT NULL,
+    role character varying(255) NOT NULL
+);
+
 CREATE INDEX IF NOT EXISTS idx_candidate_tbl_count ON public.candidate_tbl USING btree (count);
 
 COMMIT;

@@ -144,6 +144,11 @@ func (us *UserService) UserCastVote(requestBody *models.UserCastVoteRequestBody)
 	if !userDetails.IsLoggedIn {
 		return nil, errors.New("please loggin To vote")
 	}
+	userDetails.IsVoted = true
+	err = us.UserRepo.Update(userDetails)
+	if err != nil {
+		return nil, errors.New("Error while adding the is voted details in the Database: " + err.Error())
+	}
 	candidateCheck, err := us.CandidateRepo.Find(&models.DbCandidate{
 		Name: requestBody.CandidateName,
 	})

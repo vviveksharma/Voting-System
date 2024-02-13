@@ -1,2 +1,4 @@
 DROP TABLE IF EXISTS user_tbl;
 DROP TABLE IF EXISTS admin_tbl;
+DROP TABLE IF EXISTS candidate_tbl;
+DROP TABLE IF EXISTS employee_tbl;

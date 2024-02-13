@@ -13,5 +13,17 @@ type UserValidateTokenResponseBody struct {
 }
 
 type UserCastVoteResponseBody struct {
-	Response string
+	Response string `json:"response"`
+}
+
+type AdminEmployeeRegisterResponseBody struct {
+	Response string `json:"response"`
+}
+
+type AdminEmployeeLoginResponseBody struct {
+	Response string `json:"response"`
+}
+
+type AdminOpenVoteResponseBody struct {
+	Response string `json:"response"`
 }

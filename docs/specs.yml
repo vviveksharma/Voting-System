@@ -417,11 +417,11 @@ paths:
         '200':
           description: Success
           
-  /admin/get-results:
+  /get-results:
     get:
-      summary: API to get counts of votes
+      summary: API to get counts of votes/ Winner of the election
       tags:
-        - Admin
+        - All
       responses:
         '200':
           description: Success
