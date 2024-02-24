@@ -27,3 +27,12 @@ type AdminEmployeeLoginResponseBody struct {
 type AdminOpenVoteResponseBody struct {
 	Response string `json:"response"`
 }
+
+type AdminAddCandidateResponseBody struct {
+	Response string `json:"response"`
+}
+
+type SharedGetResultResponseBody struct {
+	Name  string `json:"name"`
+	Count int    `json:"count"`
+}

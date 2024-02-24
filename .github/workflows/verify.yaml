@@ -1,7 +1,6 @@
 name: Verify Pipeline
 
 on:
-  # Trigger the verification workflow on push or pull request, for the main branch.
   push:
     branches:
       - main

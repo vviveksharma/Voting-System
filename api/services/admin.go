@@ -20,20 +20,30 @@ type IAdminService interface {
 	AdminRegisterEmployee(*models.AdminEmployeeRegisterRequesteBody) (*models.AdminEmployeeRegisterResponseBody, error)
 	AdminLoginEmployee(*models.AdminEmployeeLoginRequesteBody) (*models.AdminEmployeeLoginResponseBody, error)
 	AdminOpenVote(*models.AdminOpenVoteRequestBody) (*models.AdminOpenVoteResponseBody, error)
+	AdminAddCandidate(requestBody *models.AdminAddCandidateRequestBody) (*models.AdminAddCandidateResponseBody, error)
 }
 
-func (us *AdminService) setupAdminInstance() error {
+func (ads *AdminService) setupAdminInstance() error {
 	var err error
-	us.AdminRepo, err = repos.NewAdminRequest()
+	ads.AdminRepo, err = repos.NewAdminRequest()
 	if err != nil {
 		return errors.New("error in the repo intilization")
 	}
 	return nil
 }
 
-func (us *AdminService) setupEmployeeInstance() error {
+func (ads *AdminService) setupEmployeeInstance() error {
 	var err error
-	us.EmployeeRepo, err = repos.NewEmployeeRequest()
+	ads.EmployeeRepo, err = repos.NewEmployeeRequest()
+	if err != nil {
+		return errors.New("error in the repo intilization")
+	}
+	return nil
+}
+
+func (ads *AdminService) setupCandidateInstance() error {
+	var err error
+	ads.CandidateRepo, err = repos.NewCandidateRequest()
 	if err != nil {
 		return errors.New("error in the repo intilization")
 	}
@@ -41,8 +51,9 @@ func (us *AdminService) setupEmployeeInstance() error {
 }
 
 type AdminService struct {
-	AdminRepo    repos.Admin
-	EmployeeRepo repos.Employee
+	AdminRepo     repos.Admin
+	EmployeeRepo  repos.Employee
+	CandidateRepo repos.Candidate
 }
 
 func NewAdminService() *AdminService {
@@ -148,4 +159,23 @@ func (ads *AdminService) AdminOpenVote(requestBody *models.AdminOpenVoteRequestB
 		return nil, errors.New("can't start the voting inaccessible feature")
 	}
 	return nil, nil
+}
+
+func (ads *AdminService) AdminAddCandidate(requestBody *models.AdminAddCandidateRequestBody) (*models.AdminAddCandidateResponseBody, error) {
+	err := ads.setupCandidateInstance()
+	if err != nil {
+		return nil, errors.New("error while setting up the repo instance for the" + err.Error())
+	}
+	searlizedData := comman.Searlize(requestBody.CandidateName)
+	err = ads.CandidateRepo.Create(&models.DbCandidate{
+		Name:  searlizedData,
+		Count: 0,
+		Image: "",
+	})
+	if err != nil {
+		return nil, errors.New("error in creating the candidate entry " + err.Error())
+	}
+	return &models.AdminAddCandidateResponseBody{
+		Response: "Candidate Created Successfully",
+	}, nil
 }

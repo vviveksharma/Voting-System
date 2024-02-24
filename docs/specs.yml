@@ -6,7 +6,7 @@ info:
   contact:
     name: Vivek Sharma
     email: sharmavivek1709@gmail.com
-  
+
 tags:
   - name: Users
     description: Operations related to users
@@ -14,7 +14,7 @@ tags:
     description: Operation related to the Admin
   - name: All
     description: Api's that both User and Admin can see
-  
+
 paths:
   /register:
     post:
@@ -41,7 +41,7 @@ paths:
       tags:
         - Users
       responses:
-        '200':
+        "200":
           description: Successful registeration
           content:
             application/json:
@@ -51,8 +51,8 @@ paths:
                   message:
                     type: string
                     example: Please validate the token from the given Email
-                    
-        '409':
+
+        "409":
           description: CONFLICT (User already exists)
           content:
             application/json:
@@ -62,7 +62,7 @@ paths:
                   token:
                     type: string
                     example: User already exist please login
-                    
+
   /login:
     post:
       summary: Use to login the user inside the system.
@@ -80,7 +80,7 @@ paths:
       tags:
         - Users
       responses:
-        '200':
+        "200":
           description: Flow to the login screen.
           content:
             application/json:
@@ -90,17 +90,17 @@ paths:
                   message:
                     type: string
                     example: Login Successfull
-        '409':
+        "409":
           description: User has not validated the token
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                 response:
-                  type: string
-                  example: Please validate the token 
-                  
+                  response:
+                    type: string
+                    example: Please validate the token
+
   /validate-token:
     post:
       summary: Validate the token.
@@ -112,14 +112,14 @@ paths:
             schema:
               type: object
               properties:
-                token: 
+                token:
                   type: string
                   example: abcdef45
-                
+
       tags:
         - Users
       responses:
-        '200':
+        "200":
           description: Successfull
           content:
             application/json:
@@ -129,7 +129,7 @@ paths:
                   VoterId:
                     type: string
                     example: 0000-00000-0000-000
-        '400':
+        "400":
           description: BAD REQUEST
           content:
             application/json:
@@ -139,17 +139,10 @@ paths:
                   response:
                     type: string
                     example: Token entered is wrong
-  
-  /cast-vote/{candidateID}:
+
+  /cast-vote:
     post:
       summary: Casting the vote on the basis options
-      parameters:
-      - name: candidateID
-        in: path
-        description: ID of the candidate
-        required: true
-        schema:
-          type: integer
       requestBody:
         description: Candidate options
         required: true
@@ -159,11 +152,12 @@ paths:
               type: object
               properties:
                 candidateName:
+                  type: string
                   example: BJP
       tags:
         - Users
       responses:
-        '200':
+        "200":
           description: Successful registeration
           content:
             application/json:
@@ -171,9 +165,9 @@ paths:
                 type: object
                 properties:
                   acknowledgment:
-                    type: string 
+                    type: string
                     example: Your vote is saved successfully
-        '400':
+        "400":
           description: Unable to get the UserId
           content:
             application/json:
@@ -183,51 +177,7 @@ paths:
                   acknowledgment:
                     type: string
                     example: Unable to find the candidate provided
-                    
-  /send-email:
-    post:
-      summary: Send the varification Email to the user
-      requestBody:
-        description: User login credentials
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  format: email
-              required:
-                - username
-                - email
-                - password
-                - voterId
-      tags:
-        - Users
-      responses:
-        '200':
-          description: Successful registeration
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  response:
-                    type: string
-                    example: Email Send Successfully
-                    
-        '500':
-          description: Email sent successfull
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  response:
-                    type: string
-                    example: SERVER ISSUE
-                    
+
   /admin:
     post:
       summary: Super Admin to add the Admin candidate
@@ -247,7 +197,7 @@ paths:
       tags:
         - Admin
       responses:
-        '200':
+        "200":
           description: Sucess
           content:
             application/json:
@@ -257,7 +207,7 @@ paths:
                   response:
                     type: string
                     example: Success
-        '400':
+        "400":
           description: Failure
           content:
             application/json:
@@ -267,7 +217,7 @@ paths:
                   response:
                     type: string
                     example: You dont have the access to enter as an Admin
-  
+
   /admin/register:
     post:
       summary: Register the user on the DataBase
@@ -296,7 +246,7 @@ paths:
       tags:
         - Admin
       responses:
-        '200':
+        "200":
           description: Successful registeration
           content:
             application/json:
@@ -306,8 +256,8 @@ paths:
                   loginID:
                     type: string
                     example: 123456
-                    
-        '409':
+
+        "409":
           description: Government Employee is not verified
           content:
             application/json:
@@ -317,8 +267,8 @@ paths:
                   response:
                     type: string
                     example: User is not a government Employee
-        
-        '400':
+
+        "400":
           description: CONFLICT (Government Employee already exists)
           content:
             application/json:
@@ -328,7 +278,7 @@ paths:
                   response:
                     type: string
                     example: Admin Id already exist please login
-                    
+
   /admin/login:
     post:
       summary: Login as Admin (Check in DB if he has access to login as the Admin)
@@ -348,7 +298,7 @@ paths:
       tags:
         - Admin
       responses:
-        '200':
+        "200":
           description: Successful Login
           content:
             application/json:
@@ -358,8 +308,8 @@ paths:
                   response:
                     type: string
                     example: Login Successfull
-                    
-        '400':
+
+        "400":
           description: Wrong ID
           content:
             application/json:
@@ -369,7 +319,7 @@ paths:
                   token:
                     type: string
                     example: Employee not found
-  
+
   /admin/role/{govtId}:
     put:
       summary: Giving the employee the role they wanted
@@ -379,11 +329,11 @@ paths:
           required: true
           schema:
             type: string
-        
+
       tags:
         - Admin
       responses:
-        '200':
+        "200":
           description: Success
           content:
             application/json:
@@ -393,7 +343,7 @@ paths:
                   response:
                     type: string
                     example: Role provided
-                  
+
   /admin/open-vote:
     post:
       description: Admin can open the Voting lines
@@ -414,26 +364,29 @@ paths:
       tags:
         - Admin
       responses:
-        '200':
+        "200":
           description: Success
-          
+
   /get-results:
     get:
       summary: API to get counts of votes/ Winner of the election
       tags:
         - All
       responses:
-        '200':
+        "200":
           description: Success
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  response:
+                  Name:
+                    type: string
+                    example: BJP
+                  VoteCount:
                     type: integer
                     example: 100
-                    
+
   /admin/add-candidate:
     post:
       description: Adding the candidate in the DataBase
@@ -445,15 +398,15 @@ paths:
               type: object
               properties:
                 Name:
-                 type: string
-                 example: BJP
+                  type: string
+                  example: BJP
                 Image:
                   type: string
                   example: image.jpg
       tags:
         - Admin
       responses:
-        '200':
+        "200":
           description: Success
           content:
             application/json:
@@ -463,7 +416,7 @@ paths:
                   response:
                     type: string
                     example: BJP entered Successfully
-        '409':
+        "409":
           description: Candidate is already in the DataBase
           content:
             application/json:
@@ -473,4 +426,3 @@ paths:
                   response:
                     type: string
                     example: Entry is already there
-        

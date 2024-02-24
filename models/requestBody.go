@@ -37,3 +37,7 @@ type AdminOpenVoteRequestBody struct {
 	Role string `json:"role"`
 	Time int64  `json:"time"`
 }
+
+type AdminAddCandidateRequestBody struct {
+	CandidateName string `json:"candidate_name"`
+}

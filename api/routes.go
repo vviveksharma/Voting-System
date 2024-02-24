@@ -14,6 +14,10 @@ func Routes(app *fiber.App, h *handlers.Handler) {
 	app.Post("/users/register", h.UserRegister)
 	app.Post("/users/login", h.UserLogin)
 	app.Post("/users/validate-token", h.UserValidateToken)
+	app.Post("/users/cast-vote", h.UserCastVote)
 	app.Post("/admin/register", h.AdminRegisterEmployee)
 	app.Post("/admin/login", h.AdminLoginEmployee)
+	app.Post("/admin/add-candidate", h.AdminAddCandidate)
+	app.Post("/admin/open-vote", h.AdminOpenVote)
+	app.Get("/get-results", h.GetResult)
 }

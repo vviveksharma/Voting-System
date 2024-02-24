@@ -61,3 +61,18 @@ func (cd *CandidateImpl) Update(value *models.DbCandidate) error {
 	transaction.Commit()
 	return nil
 }
+
+func (cd *CandidateImpl) GetResult() (*models.DbCandidate, error) {
+	dbConn, err := db.InitDB()
+	if err != nil {
+		return nil, err
+	}
+	transaction := dbConn.Begin()
+	if transaction.Error != nil {
+		return nil, transaction.Error
+	}
+	defer transaction.Rollback()
+	var response models.DbCandidate
+	transaction.Order("count desc").First(&response)
+	return &response, nil
+}

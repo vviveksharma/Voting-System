@@ -6,9 +6,10 @@ import (
 )
 
 type Handler struct {
-	Logger       *log.Logger
-	UserService  services.IUserService
-	AdminService services.IAdminService
+	Logger        *log.Logger
+	UserService   services.IUserService
+	AdminService  services.IAdminService
+	SharedService services.ISharedService
 }
 
 func NewHandler(logger *log.Logger) *Handler {
@@ -22,5 +23,10 @@ func (h *Handler) UserServiceInstance(us services.IUserService) *Handler {
 
 func (h *Handler) AdminSericeInstance(ad services.IAdminService) *Handler {
 	h.AdminService = ad
+	return h
+}
+
+func (h *Handler) SharedServiceInstance(ss services.ISharedService) *Handler {
+	h.SharedService = ss
 	return h
 }
