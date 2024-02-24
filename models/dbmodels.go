@@ -51,8 +51,8 @@ func (*DbAdmin) BeforeCreate(tx *gorm.DB) error {
 type DbCandidate struct {
 	Id    uuid.UUID `gorm:"primaryKey,column:id"`
 	Name  string    `gorm:"column:name;varchar(255);not null"`
-	Count int       `gorm:"column:role;index"`
-	Image string    `gorm:"column:Image;varchar(500)"`
+	Count int       `gorm:"column:count;index"`
+	Image string    `gorm:"column:image;varchar(500)"`
 }
 
 func (DbCandidate) TableName() string {

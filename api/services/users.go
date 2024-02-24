@@ -144,21 +144,24 @@ func (us *UserService) UserCastVote(requestBody *models.UserCastVoteRequestBody)
 	if !userDetails.IsLoggedIn {
 		return nil, errors.New("please loggin To vote")
 	}
+	serlizedData := comman.Searlize(requestBody.CandidateName)
+	candidateCheck, err := us.CandidateRepo.Find(&models.DbCandidate{
+		Name: serlizedData,
+	})
+	if err != nil {
+		return nil, errors.New("unable to find the candidate please try again")
+	}
+	candidateCheck.Count += 1
 	userDetails.IsVoted = true
 	err = us.UserRepo.Update(userDetails)
 	if err != nil {
 		return nil, errors.New("Error while adding the is voted details in the Database: " + err.Error())
 	}
-	candidateCheck, err := us.CandidateRepo.Find(&models.DbCandidate{
-		Name: requestBody.CandidateName,
-	})
-	if err != nil {
-		return nil, errors.New("")
-	}
-	candidateCheck.Count += 1
 	err = us.CandidateRepo.Update(candidateCheck)
 	if err != nil {
 		return nil, errors.New("error while updating the cadidate record")
 	}
-	return nil, nil
+	return &models.UserCastVoteResponseBody{
+		Response: "Your vote is saved successfully",
+	}, nil
 }

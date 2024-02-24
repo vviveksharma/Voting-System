@@ -18,24 +18,24 @@ func main() {
 	app := fiber.New()
 	app.Use(recover.New())
 	done := make(chan struct{})
-	db.InitDB()
-	var Log *log.Logger
-	// Swagger UI
-	handler := handlers.NewHandler(Log).UserServiceInstance(services.NewUserService()).AdminSericeInstance(services.NewAdminService())
-	routes.Routes(app, handler)
 	go func() {
-		// Simulate some work in the Goroutine
 		time.Sleep(5 * time.Second)
+		_, err := db.InitDB()
+		if err != nil {
+			log.Println("error in starting the DataBase: ", err)
+		}
 		adminId, err := check()
 		if err != nil {
 			log.Print(err)
 		}
 		log.Print("Admin Id = ", adminId)
-		// Signal that the Goroutine is done
 		close(done)
 	}()
-	// Your API routes go here...
-	log.Fatal(app.Listen(":8000"))
+	var Log *log.Logger
+	handler := handlers.NewHandler(Log).UserServiceInstance(services.NewUserService()).AdminSericeInstance(services.NewAdminService()).SharedServiceInstance(services.NewSharedService())
+	routes.Routes(app, handler)
+
+	log.Println(app.Listen(":8000"))
 }
 
 func check() (string, error) {
